@@ -261,8 +261,18 @@ function ReviewCarousel({
           disabled={activeIndex === 0}
           className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-surface text-muted transition-colors hover:bg-page disabled:cursor-not-allowed disabled:opacity-45"
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M15 6C15 6 9.00001 10.4189 9 12C8.99999 13.5812 15 18 15 18" />
           </svg>
         </button>
 
@@ -289,8 +299,18 @@ function ReviewCarousel({
           disabled={activeIndex === totalReviews - 1}
           className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-surface text-muted transition-colors hover:bg-page disabled:cursor-not-allowed disabled:opacity-45"
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M9.00005 6C9.00005 6 15 10.4189 15 12C15 13.5812 9 18 9 18" />
           </svg>
         </button>
       </div>

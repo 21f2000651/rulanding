@@ -10,6 +10,9 @@ const roles = [
     href: "/school",
     summary: "Design predictable outcomes across grades, campuses, and boards.",
     bullets: ["Cohort-level forecasting", "Campus performance dashboards"],
+    cta: "Let's try it out",
+    hoverLine: "Let's get deep insights into my school's performance",
+    tone: "from-cyan-400/25 via-primary/18 to-transparent",
   },
   {
     id: "teachers",
@@ -17,6 +20,9 @@ const roles = [
     href: "/teacher",
     summary: "Give teachers their time back without losing academic rigour.",
     bullets: ["Automated grading & insights", "Lesson-ready analytics"],
+    cta: "Let's offload my burden & focus on teaching",
+    hoverLine: "Proceed to teacher workspace",
+    tone: "from-indigo-400/28 via-primary/22 to-transparent",
   },
   {
     id: "students",
@@ -24,6 +30,9 @@ const roles = [
     href: "/student",
     summary: "Help every learner progress with confidence, not anxiety.",
     bullets: ["Adaptive practice journeys", "Clear weekly goals"],
+    cta: "I'm excited for personalized learning",
+    hoverLine: "Let's go",
+    tone: "from-violet-300/30 via-primary/20 to-transparent",
   },
 ];
 
@@ -75,17 +84,21 @@ type RoleCardProps = {
 function RoleCard({ role }: RoleCardProps) {
   return (
     <motion.div
+      className="h-full"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      whileHover={{ y: -6, rotate: -0.5 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      whileHover={{ y: -8, scale: 1.015 }}
+      transition={{ type: "spring", stiffness: 230, damping: 19, mass: 0.7 }}
     >
       <Link
         href={role.href}
-        aria-label={`Explore RigorUp for ${role.title}`}
-        className="no-link-underline group flex h-full flex-col justify-between rounded-3xl bg-surface p-5 text-left shadow-sm ring-1 ring-black/5 transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+        aria-label={`Go to ${role.title} dashboard`}
+        className="no-link-underline group relative flex h-full min-h-[340px] flex-col justify-between overflow-hidden rounded-3xl border border-black/5 bg-surface/95 p-6 text-left shadow-[0_8px_26px_rgba(18,15,36,0.08)] transition-all duration-500 hover:shadow-[0_24px_45px_rgba(44,34,110,0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page md:min-h-[375px]"
       >
+        <div className={`pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-gradient-to-br blur-2xl transition-opacity duration-500 group-hover:opacity-95 ${role.tone}`} />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.52)_35%,transparent_68%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary-dark/80">
             {role.title}
@@ -100,11 +113,31 @@ function RoleCard({ role }: RoleCardProps) {
             ))}
           </ul>
         </div>
-        <div className="mt-4 flex items-center justify-between text-xs font-medium text-primary">
-          <span>View journey</span>
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-[11px] transition-transform group-hover:translate-x-1 group-hover:bg-primary group-hover:text-white">
-            ↗
-          </span>
+
+        <div className="mt-7">
+          <div className="overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-[#5f4ef1] text-white ring-1 ring-primary-dark/20 transition-all duration-400 group-hover:translate-y-[-2px] group-hover:shadow-[0_14px_30px_rgba(71,56,188,0.38)]">
+            <div className="flex items-center justify-between gap-3 px-4 py-3.5 transition-all duration-300 group-hover:px-5 group-hover:py-4">
+              <span className="text-sm font-semibold leading-snug">{role.cta}</span>
+              <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 text-base transition-all duration-300 group-hover:translate-x-1.5 group-hover:bg-white group-hover:text-primary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 6.65032C9 6.65032 15.9383 6.10759 16.9154 7.08463C17.8924 8.06167 17.3496 15 17.3496 15M16.5 7.5L6.5 17.5" />
+                </svg>
+              </span>
+            </div>
+            <div className="max-h-0 px-4 pb-0 text-xs text-white/90 opacity-0 transition-all duration-500 ease-out group-hover:max-h-14 group-hover:px-5 group-hover:pb-4 group-hover:opacity-100">
+              {role.hoverLine}
+            </div>
+          </div>
         </div>
       </Link>
     </motion.div>

@@ -3,6 +3,7 @@ import { StoryFlow } from "../components/StoryFlow";
 import { RigorUpOverview } from "../components/RigorUpOverview";
 import { FeaturesBento } from "../components/FeaturesBento";
 import { TestimonialsSection } from "../components/TestimonialsSection";
+import { FAQSection } from "../components/FAQSection";
 import { RoleCards } from "../components/RoleCards";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <RigorUpOverview />
       <FeaturesBento />
       <TestimonialsSection />
+      <FAQSection />
       <RoleCards />
     </div>
   );
