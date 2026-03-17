@@ -20,7 +20,7 @@ export function Header() {
       className="sticky top-0 z-30 border-b border-white/40 bg-page/70 backdrop-blur-xl"
       aria-label="RigorUp primary navigation"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
         <Link
           href="/"
           className="flex items-center gap-2 rounded-full px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page"
@@ -29,7 +29,7 @@ export function Header() {
           {/* <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary text-sm font-semibold text-white shadow-sm">
             RU
           </div> */}
-          <Image src="/logo.svg" alt="RigorUp logo" width={20} height={20} />
+          <Image src="/logo.svg" alt="RigorUp logo" width={16} height={16} />
           <div className="flex flex-col leading-tight">
             <span className="text-base font-semibold tracking-tight text-ink">
               RigorUp
@@ -45,7 +45,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+              className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page uppercase tracking-wide text-xs font-semibold"
             >
               {item.label}
             </Link>

@@ -51,7 +51,13 @@ export function TestimonialsSection() {
       aria-labelledby="testimonials-heading"
       className="space-y-10 py-12 md:py-16"
     >
-      <div className="space-y-3 text-center md:text-left">
+      <motion.div
+        className="space-y-3 text-center md:text-left"
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.65, ease: "easeOut" }}
+      >
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
           Voices from the classroom
         </p>
@@ -67,7 +73,7 @@ export function TestimonialsSection() {
           human relationships—between teachers, students, and parents—can take
           center stage.
         </p>
-      </div>
+      </motion.div>
 
       <div className="grid gap-6 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
         <div className="space-y-4">
@@ -75,10 +81,14 @@ export function TestimonialsSection() {
             Teachers
           </h3>
           <div className="grid gap-4 sm:grid-cols-2">
-            {teacherTestimonials.map((t) => (
-              <figure
+            {teacherTestimonials.map((t, i) => (
+              <motion.figure
                 key={t.name}
                 className="flex h-full flex-col justify-between rounded-3xl bg-surface p-5 text-sm shadow-sm ring-1 ring-black/5"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: i * 0.1 }}
               >
                 <blockquote className="text-sm leading-relaxed text-muted">
                   “{t.quote}”
@@ -87,7 +97,7 @@ export function TestimonialsSection() {
                   <p className="font-semibold text-ink">{t.name}</p>
                   <p className="mt-0.5 text-[11px] text-muted">{t.role}</p>
                 </figcaption>
-              </figure>
+              </motion.figure>
             ))}
           </div>
         </div>
@@ -97,10 +107,14 @@ export function TestimonialsSection() {
             Students
           </h3>
           <div className="space-y-4">
-            {studentTestimonials.map((t) => (
-              <figure
+            {studentTestimonials.map((t, i) => (
+              <motion.figure
                 key={t.name}
                 className="rounded-3xl bg-primary/8 p-5 text-sm shadow-sm ring-1 ring-primary/15"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: i * 0.1 }}
               >
                 <blockquote className="text-sm leading-relaxed text-ink">
                   “{t.quote}”
@@ -109,7 +123,7 @@ export function TestimonialsSection() {
                   <p className="font-semibold text-ink">{t.name}</p>
                   <p className="mt-0.5 text-[11px] text-muted">{t.role}</p>
                 </figcaption>
-              </figure>
+              </motion.figure>
             ))}
           </div>
         </div>

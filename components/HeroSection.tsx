@@ -25,7 +25,7 @@ const imageVariants = {
 export function HeroSection() {
   return (
     <section
-      className="grid items-center gap-10 py-12 md:grid-cols-[1.1fr_minmax(0,1fr)] md:py-20"
+      className="grid items-center gap-12 py-12 md:grid-cols-[1fr_minmax(0,1.1fr)] md:py-16"
       aria-labelledby="hero-heading"
     >
       <motion.div
@@ -45,7 +45,7 @@ export function HeroSection() {
           </p> */}
           <h1
             id="hero-heading"
-            className="text-balance text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-5xl leading-[1.1]"
+            className="text-balance text-[1.65rem] font-semibold tracking-[-0.03em] text-ink sm:text-[2rem] lg:text-[2.75rem] leading-[1.12]"
           >
             <span className="block">Smart AI Analytics.</span>
             <span className="block">Personalized Learning.</span>
@@ -53,7 +53,7 @@ export function HeroSection() {
           </h1>
         </div>
 
-        <p className="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+        <p className="max-w-[520px] text-[17px] leading-[1.78] tracking-[0.004em] text-muted sm:text-[18px]">
           Empowering Schools, Teachers, and Students through a Smart AI
           Platform built for unlocking academic excellence and future-ready
           learners.
@@ -62,7 +62,7 @@ export function HeroSection() {
         <div className="flex flex-wrap items-center gap-4">
           <Link
             href="#get-demo"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-transform transition-colors hover:-translate-y-0.5 hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+            className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-transform transition-colors hover:-translate-y-0.5 hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page"
             aria-label="Get a personalized demo of RigorUp"
           >
             Get Demo
@@ -74,7 +74,7 @@ export function HeroSection() {
       </motion.div>
 
       <motion.div
-        className="relative mx-auto flex w-full max-w-md items-center justify-center"
+        className="relative mx-auto flex w-full max-w-[520px] items-center justify-center"
         initial="hidden"
         animate="visible"
         variants={imageVariants}

@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 type FeatureTileProps = {
   title: string;
@@ -17,7 +17,13 @@ export function FeaturesBento() {
       aria-labelledby="features-heading"
       className="space-y-8 py-12 md:py-16"
     >
-      <div className="space-y-3 text-center md:text-left">
+      <motion.div
+        className="space-y-3 text-center md:text-left"
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.65, ease: "easeOut" }}
+      >
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
           What RigorUp unlocks
         </p>
@@ -33,7 +39,7 @@ export function FeaturesBento() {
           analytics for school leaders to personal learning journeys for
           students and automation for teachers.
         </p>
-      </div>
+      </motion.div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-3 md:grid-rows-2">
         <FeatureTile
@@ -125,8 +131,10 @@ function FeatureTile({
 }
 
 function GridBars() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <div className="flex h-24 items-end gap-1.5 rounded-2xl bg-page p-3">
+    <div className="group/visual relative flex h-24 items-end gap-1.5 overflow-hidden rounded-2xl bg-page p-3">
       {[
         { id: "term-1", height: 40 },
         { id: "term-2", height: 65 },
@@ -135,88 +143,230 @@ function GridBars() {
         { id: "term-5", height: 88 },
         { id: "term-6", height: 72 },
         { id: "term-7", height: 90 },
-      ].map((bar) => (
-        <div key={bar.id} className="flex-1 rounded-full bg-primary/15">
-          <div
-            className="w-full rounded-full bg-primary"
+      ].map((bar, index) => (
+        <div key={bar.id} className="flex flex-1 items-end rounded-full bg-primary/15">
+          <motion.div
+            className="w-full origin-bottom rounded-full bg-primary shadow-[0_0_18px_rgba(108,89,252,0.22)]"
             style={{ height: `${bar.height}%` }}
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : { scaleY: [0.8, 1.08, 0.92, 1] }
+            }
+            transition={{
+              duration: 2.4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: index * 0.12,
+            }}
           />
         </div>
       ))}
+      <div className="pointer-events-none absolute inset-0 flex flex-col justify-between bg-gradient-to-t from-page via-page/90 to-page/65 p-3 opacity-0 transition-opacity duration-300 group-hover/visual:opacity-100">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-primary-dark/80">
+          Live Cohort Snapshot
+        </p>
+        <div className="grid grid-cols-2 gap-2 text-[10px]">
+          <div className="rounded-lg bg-surface px-2 py-1.5 shadow-sm ring-1 ring-black/5">
+            <p className="text-muted">Growth</p>
+            <p className="font-semibold text-ink">+14.8%</p>
+          </div>
+          <div className="rounded-lg bg-surface px-2 py-1.5 shadow-sm ring-1 ring-black/5">
+            <p className="text-muted">Risk trend</p>
+            <p className="font-semibold text-ink">-22%</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
 function PillRow() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <div className="flex flex-wrap gap-2 rounded-2xl bg-page p-3 text-[11px]">
+    <div className="group/visual relative flex min-h-24 flex-wrap content-start gap-2 overflow-hidden rounded-2xl bg-page p-3 text-[11px]">
       {["Auto-grading", "Attendance sync", "Assignment templates", "Lesson recaps"].map(
-        (label) => (
-          <span
+        (label, index) => (
+          <motion.span
             key={label}
-            className="rounded-full bg-primary/10 px-3 py-1 font-medium text-primary-dark"
+            className="rounded-full bg-primary/10 px-3 py-1 font-medium text-primary-dark shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] transition-colors group-hover:bg-primary/15"
+            animate={
+              prefersReducedMotion ? undefined : { y: [0, -2, 0], opacity: [0.88, 1, 0.92] }
+            }
+            transition={{
+              duration: 2.1,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: index * 0.18,
+            }}
           >
             {label}
-          </span>
+          </motion.span>
         ),
       )}
+      <div className="pointer-events-none absolute inset-0 flex items-end justify-between bg-gradient-to-t from-page via-page/90 to-page/65 p-3 opacity-0 transition-opacity duration-300 group-hover/visual:opacity-100">
+        <div className="rounded-lg bg-surface px-2.5 py-1.5 text-[10px] shadow-sm ring-1 ring-black/5">
+          <p className="text-muted">Generated today</p>
+          <p className="font-semibold text-ink">126 practice sets</p>
+        </div>
+        <div className="rounded-lg bg-surface px-2.5 py-1.5 text-[10px] shadow-sm ring-1 ring-black/5">
+          <p className="text-muted">Teacher hours</p>
+          <p className="font-semibold text-ink">18 hrs reclaimed</p>
+        </div>
+      </div>
     </div>
   );
 }
 
 function PathDots() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <div className="flex h-24 items-center justify-between rounded-2xl bg-page px-4">
+    <div className="group/visual relative flex h-24 items-center justify-between overflow-hidden rounded-2xl bg-page px-4">
+      <motion.div
+        className="absolute left-4 right-4 top-1/2 h-px -translate-y-1/2 bg-primary/15"
+        animate={prefersReducedMotion ? undefined : { opacity: [0.35, 0.7, 0.35] }}
+        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+      />
       {[0, 1, 2, 3, 4].map((step) => (
-        <div key={step} className="flex flex-col items-center gap-1">
+        <div key={step} className="relative z-10 flex flex-col items-center gap-1">
           <span
-            className={`h-3 w-3 rounded-full ${
+            className={`h-3 w-3 rounded-full shadow-[0_0_12px_rgba(108,89,252,0.16)] ${
               step === 2 ? "bg-primary" : "bg-primary/30"
             }`}
           />
           <span className="h-5 w-px bg-primary/20" />
         </div>
       ))}
+      {!prefersReducedMotion && (
+        <motion.div
+          className="absolute top-1/2 h-3 w-3 rounded-full bg-primary shadow-[0_0_18px_rgba(108,89,252,0.4)]"
+          initial={{ x: 28, y: "-50%" }}
+          animate={{ x: [28, 92, 156, 220, 284] }}
+          transition={{ duration: 4.2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+        />
+      )}
+      <div className="pointer-events-none absolute inset-0 flex items-end justify-between bg-gradient-to-t from-page via-page/90 to-page/65 p-3 opacity-0 transition-opacity duration-300 group-hover/visual:opacity-100">
+        <div className="rounded-lg bg-surface px-2.5 py-1.5 text-[10px] shadow-sm ring-1 ring-black/5">
+          <p className="text-muted">Adaptive route</p>
+          <p className="font-semibold text-ink">Math pace recalibrated</p>
+        </div>
+      </div>
     </div>
   );
 }
 
 function Heatmap() {
+  const prefersReducedMotion = useReducedMotion();
+  const levels = [0.22, 0.35, 0.5, 0.32, 0.46, 0.28, 0.4, 0.58, 0.72, 0.5, 0.64, 0.36, 0.34, 0.48, 0.62, 0.4, 0.55, 0.3];
+
   return (
-    <div className="grid h-24 grid-cols-6 grid-rows-3 gap-1 rounded-2xl bg-page p-2">
-      {Array.from({ length: 18 }).map((_, index) => (
-        <div key={`cell-${index}`} className="rounded-md bg-primary/20" />
+    <div className="group/visual relative grid h-24 grid-cols-6 grid-rows-3 gap-1 overflow-hidden rounded-2xl bg-page p-2">
+      {levels.map((level, index) => (
+        <motion.div
+          key={`cell-${index}`}
+          className="rounded-md bg-primary"
+          initial={false}
+          animate={
+            prefersReducedMotion
+              ? { opacity: level }
+              : { opacity: [level * 0.65, level, level * 0.8] }
+          }
+          transition={{
+            duration: 2.3,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: index * 0.06,
+          }}
+        />
       ))}
+      <div className="pointer-events-none absolute inset-0 flex items-end justify-between bg-gradient-to-t from-page via-page/90 to-page/60 p-2 opacity-0 transition-opacity duration-300 group-hover/visual:opacity-100">
+        <p className="rounded-md bg-surface px-2 py-1 text-[10px] font-medium text-ink shadow-sm ring-1 ring-black/5">
+          Algebra cluster: watchlist
+        </p>
+      </div>
     </div>
   );
 }
 
 function TrendLine() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <div className="relative h-24 rounded-2xl bg-page p-3">
+    <div className="group/visual relative h-24 overflow-hidden rounded-2xl bg-page p-3">
       <div className="absolute inset-x-3 top-1/2 h-px -translate-y-1/2 bg-primary/15" />
       <svg
         viewBox="0 0 100 40"
         className="relative h-full w-full text-primary"
         aria-hidden="true"
       >
-        <polyline
+        <motion.path
+          d="M0 30 C12 29, 18 25, 30 24 S52 18, 60 16 S84 11, 100 8"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
-          points="0,30 15,26 30,24 45,20 60,16 75,14 90,10 100,8"
+          strokeWidth="2.5"
+          initial={prefersReducedMotion ? false : { pathLength: 0.2, opacity: 0.5 }}
+          animate={
+            prefersReducedMotion
+              ? undefined
+              : { pathLength: [0.25, 1, 1], opacity: [0.55, 1, 0.85] }
+          }
+          transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
         />
+        {!prefersReducedMotion && (
+          <motion.circle
+            r="2.6"
+            fill="currentColor"
+            cy="8"
+            animate={{ cx: [10, 28, 46, 66, 92] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        )}
       </svg>
+      <div className="pointer-events-none absolute inset-0 flex items-end justify-between bg-gradient-to-t from-page via-page/90 to-page/60 p-3 opacity-0 transition-opacity duration-300 group-hover/visual:opacity-100">
+        <div className="rounded-lg bg-surface px-2.5 py-1.5 text-[10px] shadow-sm ring-1 ring-black/5">
+          <p className="text-muted">Weekly growth</p>
+          <p className="font-semibold text-ink">+11.2 mastery pts</p>
+        </div>
+      </div>
     </div>
   );
 }
 
 function Shield() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <div className="flex h-24 items-center justify-center rounded-2xl bg-page p-4">
-      <div className="relative h-12 w-10 rounded-b-[1.4rem] rounded-t-xl border border-primary/40 bg-primary/10">
-        <div className="absolute inset-2 rounded-lg bg-primary/30" />
-        <div className="absolute inset-x-2 bottom-2 h-1.5 rounded-full bg-primary-dark/60" />
+    <div className="group/visual flex h-24 items-center justify-center overflow-hidden rounded-2xl bg-page p-4">
+      <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl">
+        {!prefersReducedMotion && (
+          <>
+            <motion.div
+              className="absolute h-14 w-14 rounded-full border border-primary/18"
+              animate={{ scale: [0.8, 1.3], opacity: [0.5, 0] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+            />
+            <motion.div
+              className="absolute h-20 w-20 rounded-full border border-primary/12"
+              animate={{ scale: [0.85, 1.2], opacity: [0.38, 0] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
+            />
+          </>
+        )}
+        <motion.div
+          className="relative h-12 w-10 rounded-b-[1.4rem] rounded-t-xl border border-primary/40 bg-primary/10"
+          animate={prefersReducedMotion ? undefined : { y: [0, -2, 0] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="absolute inset-2 rounded-lg bg-primary/30" />
+          <div className="absolute inset-x-2 bottom-2 h-1.5 rounded-full bg-primary-dark/60" />
+        </motion.div>
+        <div className="pointer-events-none absolute inset-0 flex items-end justify-center bg-gradient-to-t from-page via-page/90 to-page/60 p-2 opacity-0 transition-opacity duration-300 group-hover/visual:opacity-100">
+          <p className="rounded-md bg-surface px-2.5 py-1 text-[10px] font-medium text-ink shadow-sm ring-1 ring-black/5">
+            100% encrypted + role-based access
+          </p>
+        </div>
       </div>
     </div>
   );

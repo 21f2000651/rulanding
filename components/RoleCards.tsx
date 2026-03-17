@@ -34,7 +34,13 @@ export function RoleCards() {
       aria-labelledby="role-cards-heading"
       className="space-y-6 py-12 md:py-16"
     >
-      <div className="space-y-3 text-center md:text-left">
+      <motion.div
+        className="space-y-3 text-center md:text-left"
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.65, ease: "easeOut" }}
+      >
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
           Built for your role
         </p>
@@ -49,7 +55,7 @@ export function RoleCards() {
           Explore how RigorUp supports schools, teachers, and students with a
           unified platform tuned to each perspective.
         </p>
-      </div>
+      </motion.div>
 
       <div className="grid gap-4 md:grid-cols-3">
         {roles.map((role) => (
@@ -69,6 +75,9 @@ type RoleCardProps = {
 function RoleCard({ role }: RoleCardProps) {
   return (
     <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
       whileHover={{ y: -6, rotate: -0.5 }}
       transition={{ type: "spring", stiffness: 260, damping: 20 }}
     >

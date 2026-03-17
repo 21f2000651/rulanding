@@ -61,7 +61,13 @@ export function StoryFlow() {
       aria-labelledby="story-heading"
       className="space-y-10 py-12 md:py-16"
     >
-      <div className="space-y-4 text-center md:text-left">
+        <motion.div
+          className="space-y-4 text-center md:text-left"
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+        >
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
           The RigorUp Story
         </p>
@@ -77,7 +83,7 @@ export function StoryFlow() {
           parents expect, what educators experience, and what students actually
           need. Follow the story that shaped our platform.
         </p>
-      </div>
+        </motion.div>
 
       <div className="relative">
         <div className="pointer-events-none absolute left-1/2 top-0 z-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-primary/10 via-primary/30 to-primary/0 md:block" />
@@ -92,16 +98,16 @@ export function StoryFlow() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className={`grid gap-6 rounded-3xl bg-surface/90 p-6 shadow-sm ring-1 ring-black/5 sm:p-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] ${
+                className={`grid gap-6 rounded-3xl bg-surface/90 p-6 shadow-sm ring-1 ring-black/5 sm:p-8 md:grid-cols-2 ${
                   isEven ? "md:[&>*:first-child]:order-2" : ""
                 }`}
               >
                 <div className="flex flex-col gap-4">
                   <div className="inline-flex items-center gap-3">
-                    <span className="inline-flex h-7 rounded-full bg-primary/10 px-3 text-xs font-semibold uppercase tracking-wide text-primary">
+                    {/* <span className="inline-flex h-7 rounded-full bg-primary/10 px-3 text-xs font-semibold uppercase tracking-wide text-primary">
                       {stage.id} · {stage.title}
-                    </span>
-                    <span className="hidden text-xs font-medium text-muted sm:inline">
+                    </span> */}
+                    <span className="inline-flex h-7 rounded-full bg-primary/10 px-3 text-xs font-semibold uppercase tracking-wide text-primary py-1.5">
                       {stage.label}
                     </span>
                   </div>
@@ -115,16 +121,15 @@ export function StoryFlow() {
                   </div>
                 </div>
 
-                <div className="relative">
+                <div className="relative flex items-center">
                   <div className="absolute inset-4 -z-10 rounded-[2.25rem] bg-primary-light/35 blur-2xl" />
-                  <div className="relative overflow-hidden rounded-[2rem] bg-page p-4 shadow-lg shadow-primary/15 ring-1 ring-black/5">
+                  <div className="relative w-full aspect-[4/3] overflow-hidden rounded-[2rem] bg-page shadow-lg shadow-primary/15 ring-1 ring-black/5">
                     <Image
                       src={stage.image}
                       alt={stage.alt}
-                      width={520}
-                      height={420}
-                      className="h-auto w-full"
-                      sizes="(min-width: 1024px) 420px, (min-width: 640px) 360px, 280px"
+                      fill
+                      className="object-contain p-5"
+                      sizes="(min-width: 1024px) 440px, (min-width: 640px) 360px, 320px"
                     />
                   </div>
                 </div>
