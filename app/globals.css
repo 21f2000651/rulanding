@@ -1,26 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand colors */
+  --color-primary: #6c59fc;
+  --color-primary-light: #b2a7f3;
+  --color-primary-dark: #3c315b;
+
+  /* Neutrals and surfaces */
+  --color-bg-page: #f7f5ff;
+  --color-bg-surface: #ffffff;
+  --color-ink: #15121f;
+  --color-muted: #5e5a72;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Map CSS variables into Tailwind tokens */
+  --color-primary: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-page: var(--color-bg-page);
+  --color-surface: var(--color-bg-surface);
+  --color-ink: var(--color-ink);
+  --color-muted: var(--color-muted);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-plus-jakarta), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg-page);
+  color: var(--color-ink);
+  font-family: var(--font-plus-jakarta), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
 }
