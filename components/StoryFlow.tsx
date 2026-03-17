@@ -59,7 +59,7 @@ export function StoryFlow() {
     <section
       id="story"
       aria-labelledby="story-heading"
-      className="space-y-10 py-12 md:py-16"
+      className="space-y-10 py-12 md:py-24"
     >
         <motion.div
           className="space-y-4 text-center md:text-left"

@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
 
 const containerVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -25,7 +24,7 @@ const imageVariants = {
 export function HeroSection() {
   return (
     <section
-      className="grid items-center gap-12 py-12 md:grid-cols-[1fr_minmax(0,1.1fr)] md:py-16"
+      className="grid items-center gap-8 md:grid-cols-[1fr_minmax(0,1.1fr)]  w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24"
       aria-labelledby="hero-heading"
     >
       <motion.div
@@ -36,7 +35,7 @@ export function HeroSection() {
       >
         <div className="inline-flex items-center gap-2 rounded-full bg-surface/80 px-3 py-1 text-xs font-medium text-muted shadow-sm ring-1 ring-black/5">
           <span className="inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-          AI-powered smart education platform for British curriculum
+          AI-powered smart education for British curriculum
         </div>
 
         <div className="space-y-4">
@@ -60,13 +59,14 @@ export function HeroSection() {
         </p>
 
         <div className="flex flex-wrap items-center gap-4">
-          <Link
-            href="#get-demo"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-transform transition-colors hover:-translate-y-0.5 hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+          <button
+            onClick={() => document.getElementById("get-demo")?.scrollIntoView({ behavior: "smooth" })}
+            className="group relative inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page overflow-hidden uppercase"
             aria-label="Get a personalized demo of RigorUp"
           >
-            Get Demo
-          </Link>
+            <span className="relative z-10">Book Demo</span>
+            <span className="absolute inset-0 -z-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+          </button>
           <p className="text-xs text-muted">
             Built for Schools, Institutes, Teachers & Students.
           </p>

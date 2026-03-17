@@ -53,7 +53,7 @@ export function RigorUpOverview() {
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7, ease: "easeOut" }}
       aria-labelledby="rigorup-overview-heading"
-      className="grid gap-6 overflow-hidden rounded-3xl bg-surface/80 p-6 py-12 shadow-sm ring-1 ring-black/5 sm:p-8 md:grid-cols-[minmax(0,1fr)_minmax(20rem,0.94fr)] md:py-16 lg:gap-8"
+      className="grid items-center gap-y-10 py-12 md:grid-cols-[minmax(0,1.08fr)_minmax(20rem,0.92fr)] md:gap-x-8 md:py-28 lg:gap-x-10"
     >
       <div className="space-y-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
@@ -93,7 +93,7 @@ export function RigorUpOverview() {
         </dl>
       </div>
 
-      <div className="relative flex items-center justify-center md:justify-start">
+      <div className="relative flex items-center justify-center md:justify-end">
         <div className="absolute inset-4 -z-10 rounded-[3rem] bg-primary-light/40 blur-3xl" />
         <CardSwap
           cardDistance={22}
@@ -104,7 +104,7 @@ export function RigorUpOverview() {
           isActive={isSectionInView}
           skewAmount={2}
           easing="elastic"
-          containerClassName="h-[430px] w-full max-w-[24rem] sm:h-[460px]"
+          containerClassName="h-[430px] w-full max-w-[30rem] sm:h-[460px]"
         >
           {dashboardCards.map((card) => (
             <Card key={card.title} className="h-[360px] w-[min(100%,21.5rem)] p-4 sm:h-[390px] sm:p-5">

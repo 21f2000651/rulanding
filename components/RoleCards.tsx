@@ -32,7 +32,7 @@ export function RoleCards() {
     <section
       id="partners"
       aria-labelledby="role-cards-heading"
-      className="space-y-6 py-12 md:py-16"
+      className="space-y-6 py-12 md:py-24"
     >
       <motion.div
         className="space-y-3 text-center md:text-left"
@@ -84,7 +84,7 @@ function RoleCard({ role }: RoleCardProps) {
       <Link
         href={role.href}
         aria-label={`Explore RigorUp for ${role.title}`}
-        className="group flex h-full flex-col justify-between rounded-3xl bg-surface p-5 text-left shadow-sm ring-1 ring-black/5 transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+        className="no-link-underline group flex h-full flex-col justify-between rounded-3xl bg-surface p-5 text-left shadow-sm ring-1 ring-black/5 transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-page"
       >
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary-dark/80">
