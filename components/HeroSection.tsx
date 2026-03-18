@@ -142,7 +142,7 @@ export function HeroSection() {
         {/* Heading — mt-3 (tight), reads as continuation of badge */}
         <h1
           id="hero-heading"
-          className="mt-3 text-balance text-[1.65rem] font-semibold tracking-[-0.03em] text-ink sm:text-[2rem] lg:text-[2.5rem] leading-[1.12]"
+          className="mt-3 text-balance text-[1.65rem] font-semibold tracking-[-0.03em] text-ink sm:text-[2rem] lg:text-[3rem] leading-[1.12]"
         >
           <span className="block">Smart AI Analytics.</span>
           <span className="block">Personalized Learning.</span>
@@ -186,7 +186,7 @@ export function HeroSection() {
         <div className="absolute inset-6 -z-10 rounded-[3rem] bg-primary-light/40 blur-3xl" />
         <div className="relative overflow-hidden rounded-[2.5rem]">
           <Image
-            src="/svgs/Graduation.png"
+            src="/svgs/herotry.svg"
             alt="A student celebrating graduation, representing successful learning outcomes with RigorUp"
             width={480}
             height={480}

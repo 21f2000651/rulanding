@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const year = new Date().getFullYear();
 
@@ -25,7 +26,7 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-white/10 bg-primary-dark text-white">
+    <footer className="border-t border-white/10 bg-primary-dark text-white">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-[minmax(0,1.6fr)_minmax(0,2fr)]">
           <div className="space-y-4">
@@ -33,9 +34,12 @@ export function Footer() {
               <span className="inline-flex h-1.5 w-1.5 rounded-full bg-primary-light" />
               AI-powered Smart Education Platform
             </div>
-            <h2 className="text-lg font-semibold tracking-tight">
-              RigorUp
-            </h2>
+            <div className="flex items-center gap-2">
+              <Image src="/logo.svg" alt="RigorUp logo" width={16} height={16} />
+              <h2 className="text-lg font-semibold tracking-tight">
+                RigorUp
+              </h2>
+            </div>
             <p className="max-w-sm text-sm text-white/70">
               Unlocking Academic Excellence for schools, teachers, and students
               through smart AI analytics and personalized learning journeys.

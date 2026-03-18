@@ -1,14 +1,60 @@
 "use client";
 
-import { ReactNode, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { ReactNode, useMemo, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
 
 const springTransition = {
   type: "spring" as const,
-  stiffness: 220,
-  damping: 24,
-  mass: 0.7,
+  stiffness: 320,
+  damping: 28,
+  mass: 0.45,
 };
+
+const hoverTransition = {
+  type: "spring" as const,
+  stiffness: 380,
+  damping: 30,
+  mass: 0.4,
+};
+
+type DashboardTabId = "dashboard" | "management" | "threads" | "resources";
+
+type DashboardTab = {
+  id: DashboardTabId;
+  label: string;
+  badge?: string;
+  header: string;
+  description: string;
+};
+
+const dashboardTabs: DashboardTab[] = [
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    header: "Project Overview",
+    description: "Daily summary of your team performance.",
+  },
+  {
+    id: "management",
+    label: "Management",
+    badge: "10",
+    header: "Team Management",
+    description: "Manage roles and user permissions.",
+  },
+  {
+    id: "threads",
+    label: "Threads",
+    badge: "12",
+    header: "Communications",
+    description: "High-priority team discussions.",
+  },
+  {
+    id: "resources",
+    label: "Resources",
+    header: "System Assets",
+    description: "Shared documentation and media logs.",
+  },
+];
 
 type TileVisualProps = {
   isHovered: boolean;
@@ -121,8 +167,9 @@ function FeatureTile({
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       whileHover={prefersReducedMotion ? undefined : { y: -6, scale: 1.008 }}
+      whileTap={prefersReducedMotion ? undefined : { scale: 1.003 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       onFocusCapture={() => setIsHovered(true)}
@@ -164,50 +211,216 @@ function FeatureTile({
 }
 
 function DashboardVisual({ isHovered, prefersReducedMotion }: TileVisualProps) {
+  const [activeTabId, setActiveTabId] = useState<DashboardTabId>("dashboard");
+  const activeTab = useMemo(
+    () => dashboardTabs.find((tab) => tab.id === activeTabId) ?? dashboardTabs[0],
+    [activeTabId],
+  );
+
+  const content = useMemo(() => {
+    switch (activeTabId) {
+      case "dashboard":
+        return <OverviewTabPanel />;
+      case "management":
+        return <ManagementTabPanel />;
+      case "threads":
+        return <ThreadsTabPanel />;
+      case "resources":
+        return <ResourcesTabPanel />;
+      default:
+        return <OverviewTabPanel />;
+    }
+  }, [activeTabId]);
+
   return (
     <motion.div
-      className="relative grid h-40 grid-cols-12 gap-2"
-      animate={prefersReducedMotion ? undefined : { scale: isHovered ? 1.01 : 1 }}
-      transition={springTransition}
+      className="relative h-40 overflow-hidden rounded-xl border border-primary/10 bg-surface"
+      animate={prefersReducedMotion ? undefined : { y: isHovered ? -2 : 0, scale: isHovered ? 1.008 : 1 }}
+      transition={hoverTransition}
     >
-      <motion.div
-        className="col-span-8 rounded-xl bg-surface p-3 ring-1 ring-black/5"
-        animate={prefersReducedMotion ? undefined : { y: isHovered ? -3 : 0 }}
-        transition={springTransition}
-      >
-        <div className="grid h-full grid-cols-5 items-end gap-1.5">
-          {[
-            "h-6",
-            "h-10",
-            "h-8",
-            "h-12",
-            "h-9",
-          ].map((heightClass, index) => (
-            <motion.span
-              key={`bar-${index}`}
-              className={`rounded-md bg-primary/70 ${heightClass}`}
-              animate={prefersReducedMotion ? undefined : { opacity: isHovered ? 1 : 0.82 }}
-              transition={springTransition}
-            />
+      <div className="absolute left-9 top-7 h-full w-full rounded-2xl border border-primary/8 bg-page/90" />
+      <div className="absolute left-5 top-3 h-full w-full overflow-hidden rounded-tl-2xl border border-primary/12 bg-surface shadow-[0_18px_28px_rgba(60,49,91,0.1)]">
+        <div className="relative flex items-center border-b border-primary/10 px-3 py-2">
+          <div className="flex gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary/25" />
+            <span className="h-1.5 w-1.5 rounded-full bg-primary/25" />
+            <span className="h-1.5 w-1.5 rounded-full bg-primary/25" />
+          </div>
+          <p className="absolute left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-[0.14em] text-muted">
+            Workspace
+          </p>
+        </div>
+
+        <div className="flex h-[calc(100%-33px)] overflow-hidden">
+          <div className="w-[34%] border-r border-primary/10 bg-page/70 p-1.5">
+            <LayoutGroup>
+              {dashboardTabs.map((tab) => {
+                const isActive = activeTab.id === tab.id;
+
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    aria-label={`Switch to ${tab.label}`}
+                    onClick={() => setActiveTabId(tab.id)}
+                    className={`relative mb-1 flex w-full items-center gap-1.5 rounded-lg px-1.5 py-1 text-left text-[9px] transition-colors ${
+                      isActive
+                        ? "text-ink"
+                        : "text-muted hover:text-ink"
+                    }`}
+                  >
+                    <span className="relative z-10 h-2 w-2 rounded-sm bg-primary/35" />
+                    <span className="relative z-10 truncate font-medium">{tab.label}</span>
+                    {tab.badge && (
+                      <span
+                        className={`relative z-10 ml-auto rounded px-1 py-0.5 text-[8px] leading-none ${
+                          isActive
+                            ? "bg-primary/14 text-primary-dark"
+                            : "bg-primary/8 text-muted"
+                        }`}
+                      >
+                        {tab.badge}
+                      </span>
+                    )}
+
+                    {isActive && (
+                      <motion.span
+                        layoutId="dashboard-tab-bg"
+                        className="absolute inset-0 rounded-lg border border-primary/14 bg-surface"
+                        transition={hoverTransition}
+                      />
+                    )}
+                    {isActive && (
+                      <motion.span
+                        layoutId="dashboard-tab-pill"
+                        className="absolute left-0 top-1/2 h-3 w-[2px] -translate-y-1/2 rounded-full bg-primary"
+                        transition={hoverTransition}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </LayoutGroup>
+          </div>
+
+          <div className="relative flex-1 p-2.5">
+            <header className="mb-2">
+              <p className="text-[8px] font-semibold uppercase tracking-[0.1em] text-muted">
+                {activeTab.header}
+              </p>
+              <p className="text-[8px] text-muted">{activeTab.description}</p>
+            </header>
+
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activeTab.id}
+                initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 6, filter: "blur(2px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -6, filter: "blur(2px)" }}
+                transition={{ duration: 0.16, ease: "easeOut" }}
+                className="h-[84px]"
+              >
+                {content}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function OverviewTabPanel() {
+  return (
+    <div className="grid h-full grid-rows-[1fr_auto] gap-2">
+      <div className="rounded-lg border border-primary/12 bg-page p-2">
+        <div className="mb-1.5 flex items-center justify-between text-[8px] text-muted">
+          <span>Team performance</span>
+          <span className="font-semibold text-primary-dark">94.2%</span>
+        </div>
+        <div className="grid h-9 grid-cols-5 items-end gap-1">
+          {["h-3", "h-5", "h-4", "h-6", "h-5"].map((heightClass, index) => (
+            <span key={`perf-bar-${index}`} className={`rounded-sm bg-primary/75 ${heightClass}`} />
           ))}
         </div>
-      </motion.div>
+      </div>
+      <div className="grid grid-cols-2 gap-2 text-[8px]">
+        <div className="rounded-md border border-primary/10 bg-page px-1.5 py-1">
+          <p className="font-semibold text-ink">1,070</p>
+          <p className="text-muted">Keywords</p>
+        </div>
+        <div className="rounded-md border border-primary/10 bg-page px-1.5 py-1">
+          <p className="font-semibold text-ink">2.3M</p>
+          <p className="text-muted">Credits</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-      <motion.div
-        className="col-span-4 flex flex-col gap-2"
-        animate={prefersReducedMotion ? undefined : { x: isHovered ? 2 : 0 }}
-        transition={springTransition}
-      >
-        <div className="rounded-xl bg-surface p-2.5 text-[10px] ring-1 ring-black/5">
-          <p className="text-muted">Attendance sync</p>
-          <p className="font-semibold text-ink">98.3%</p>
+function ManagementTabPanel() {
+  const users = [
+    { name: "Anthony Dionne", role: "Pending admin approval", active: false },
+    { name: "Nick Yahodin", role: "Dealership group admin", active: true },
+    { name: "Mujeeb Aimaq", role: "Dealership group user", active: true },
+  ];
+
+  return (
+    <div className="h-full rounded-lg border border-primary/12 bg-page p-1.5">
+      {users.map((user) => (
+        <div key={user.name} className="mb-1 flex items-center gap-1.5 rounded px-1.5 py-1 text-[8px]">
+          <span className="relative h-3 w-3 rounded-full bg-primary/10">
+            <span
+              className={`absolute -bottom-0.5 -right-0.5 h-1.5 w-1.5 rounded-full ${
+                user.active ? "bg-emerald-400" : "bg-amber-400"
+              }`}
+            />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-medium text-ink">{user.name}</p>
+            <p className="truncate text-muted">{user.role}</p>
+          </div>
         </div>
-        <div className="rounded-xl bg-surface p-2.5 text-[10px] ring-1 ring-black/5">
-          <p className="text-muted">Action alerts</p>
-          <p className="font-semibold text-ink">24 queued</p>
+      ))}
+    </div>
+  );
+}
+
+function ThreadsTabPanel() {
+  return (
+    <div className="grid h-full grid-rows-[1fr_auto] gap-2">
+      <div className="grid grid-cols-2 gap-2 text-[8px]">
+        {["Create a Page", "Create a Task"].map((title) => (
+          <div key={title} className="rounded-lg border border-primary/12 bg-page p-1.5">
+            <p className="font-medium text-ink">{title}</p>
+            <p className="mt-0.5 text-muted">Build with team.</p>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center justify-between rounded-md border border-primary/12 bg-page px-1.5 py-1 text-[8px]">
+        <p className="text-muted">Pin a new item</p>
+        <span className="font-semibold text-primary-dark">+ Add</span>
+      </div>
+    </div>
+  );
+}
+
+function ResourcesTabPanel() {
+  const files = [
+    "design_spec_v2.pdf",
+    "q4_performance.xls",
+    "branding_assets.zip",
+  ];
+
+  return (
+    <div className="h-full rounded-lg border border-primary/12 bg-page p-1.5">
+      {files.map((file) => (
+        <div key={file} className="mb-1 flex items-center justify-between rounded px-1.5 py-1 text-[8px]">
+          <p className="max-w-[80%] truncate font-medium text-ink">{file}</p>
+          <span className="text-muted">↗</span>
         </div>
-      </motion.div>
-    </motion.div>
+      ))}
+    </div>
   );
 }
 

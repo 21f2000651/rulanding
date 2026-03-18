@@ -41,14 +41,14 @@ export function RoleCards() {
     <section
       id="partners"
       aria-labelledby="role-cards-heading"
-      className="space-y-6 py-12 md:py-24"
+      className="space-y-6 py-12 md:pt-24 pb-12"
     >
       <motion.div
         className="space-y-3 text-center md:text-left"
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.65, ease: "easeOut" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
       >
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
           Built for your role
