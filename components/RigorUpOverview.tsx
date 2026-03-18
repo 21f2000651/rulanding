@@ -53,7 +53,7 @@ export function RigorUpOverview() {
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7, ease: "easeOut" }}
       aria-labelledby="rigorup-overview-heading"
-      className="grid items-center gap-y-10 py-12 md:grid-cols-[minmax(0,1.08fr)_minmax(20rem,0.92fr)] md:gap-x-8 md:py-28 lg:gap-x-10"
+      className="grid items-center gap-y-10 py-12 md:grid-cols-[minmax(0,1.08fr)_minmax(20rem,0.92fr)] md:gap-x-8 md:py-24 lg:gap-x-10"
     >
       <div className="space-y-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
@@ -93,7 +93,7 @@ export function RigorUpOverview() {
         </dl>
       </div>
 
-      <div className="relative flex items-center justify-center md:justify-end">
+      <div className="relative flex items-center justify-center md:justify-end pt-0 md:pt-8">
         <div className="absolute inset-4 -z-10 rounded-[3rem] bg-primary-light/40 blur-3xl" />
         <CardSwap
           cardDistance={22}

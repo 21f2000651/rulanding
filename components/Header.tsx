@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 const navItems = [
-  { href: "#story", label: "The Story" },
-  { href: "#dashboards", label: "Dashboards" },
+  { href: "#story", label: "The Problem" },
+  { href: "#dashboards", label: "Our Solution" },
   { href: "#impact", label: "Impact" },
   { href: "#partners", label: "Partners" },
 ];
