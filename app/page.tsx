@@ -8,14 +8,21 @@ import { RoleCards } from "../components/RoleCards";
 
 export default function Home() {
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-20 pt-8 sm:px-6 lg:px-8">
-      <HeroSection />
-      <StoryFlow />
+    <>
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-0 pt-8 sm:px-6 lg:px-8">
+        <HeroSection />
+        <StoryFlow />
+      </div>
+
+      {/* Full-width dark section with gradient transitions */}
       <RigorUpOverview />
-      <FeaturesBento />
-      <TestimonialsSection />
-      <FAQSection />
-      <RoleCards />
-    </div>
+
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-20 pt-0 sm:px-6 lg:px-8">
+        <FeaturesBento />
+        <TestimonialsSection />
+        <FAQSection />
+        <RoleCards />
+      </div>
+    </>
   );
 }

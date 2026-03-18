@@ -1,78 +1,71 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
-import type { KeyboardEvent } from "react";
+import Image from "next/image";
 
 type Review = {
   name: string;
   role: string;
   quote: string;
+  audience: "teacher" | "student";
 };
 
-const teacherTestimonials: Review[] = [
+const allTestimonials: Review[] = [
   {
     name: "Ananya Rao",
-    role: "Head of Academics, Horizon International School",
+    role: "Mathematics Teacher, Horizon International School",
     quote:
       "RigorUp finally gave us a live view of our academic year. We now intervene in September instead of apologising in March.",
+    audience: "teacher",
+  },
+  {
+    name: "Ishita",
+    role: "Grade 9 Student",
+    quote:
+      "My dashboard shows exactly what I should revise today. It feels like having a quiet coach that knows how I actually learn.",
+    audience: "student",
   },
   {
     name: "James Carter",
     role: "Mathematics Teacher, Northbridge High",
     quote:
       "The platform has taken admin off my plate. I spend my evenings planning creative lessons, not grading piles of papers.",
-  },
-  {
-    name: "Dr. Sarah Mitchell",
-    role: "Deputy Head, Cedar Grove Academy",
-    quote:
-      "The early warning system has transformed how we support struggling learners. We catch gaps in understanding before they become problems.",
-  },
-  {
-    name: "Thomas Chen",
-    role: "Science & Biology Teacher, Green Oaks Institute",
-    quote:
-      "Having transparent access to student performance data means I can personalize lessons better. Every student gets exactly what they need.",
-  },
-  {
-    name: "Mrs. Lisa Patel",
-    role: "English Department Lead, Brightfields Public School",
-    quote:
-      "Parents appreciate the weekly updates. Conversations with families are now proactive instead of reactive. Trust has improved dramatically.",
-  },
-];
-
-const studentTestimonials: Review[] = [
-  {
-    name: "Ishita",
-    role: "Grade 9 Student",
-    quote:
-      "My dashboard shows exactly what I should revise today. It feels like having a quiet coach that knows how I actually learn.",
+    audience: "teacher",
   },
   {
     name: "Rahul",
     role: "Grade 11 Student",
     quote:
-      "Instead of being scared of report cards, I now track my progress every week. Small wins keep me motivated.I actually look forward to exams now.",
+      "Instead of being scared of report cards, I now track my progress every week. Small wins keep me motivated.",
+    audience: "student",
   },
   {
     name: "Aisha",
     role: "Grade 10 Student",
     quote:
-      "The nudges help me stay on track without feeling overwhelming. I actually understand what I need to work on instead of just guessing.",
+      "The nudges help me stay on track without feeling overwhelming. I actually understand what I need to work on instead of guessing.",
+    audience: "student",
   },
   {
-    name: "Marcus",
-    role: "Grade 8 Student",
+    name: "Thomas Chen",
+    role: "Science & Biology Teacher, Green Oaks Institute",
     quote:
-      "I love seeing my progress visually. When I hit a goal, it's so satisfying. Makes me want to push even harder next week. It's like a game now.",
+      "Having transparent access to student performance data means I can personalize lessons better. Every student gets what they need.",
+    audience: "teacher",
   },
   {
     name: "Priya",
     role: "Grade 12 Student",
     quote:
-      "This has honestly changed how I approach studying. I'm strategic now instead of just cramming. My grades reflect the effort.",
+      "This has honestly changed how I approach studying. I am strategic now instead of just cramming, and my grades reflect the effort.",
+    audience: "student",
+  },
+  {
+    name: "Mrs. Lisa Patel",
+    role: "English Teacher, Brightfields Public School",
+    quote:
+      "Parents appreciate the weekly updates. Conversations with families are now proactive instead of reactive. Trust has improved dramatically.",
+    audience: "teacher",
   },
 ];
 
@@ -119,202 +112,88 @@ export function TestimonialsSection() {
         </p>
       </motion.div>
 
-      <div className="relative rounded-[2rem] bg-surface/92 p-4 shadow-[0_16px_45px_rgba(24,21,46,0.08)] ring-1 ring-black/7 sm:p-6">
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(108,89,252,0.08),transparent_55%)]" />
-
-        <div className="grid gap-6 md:grid-cols-2">
-          <ReviewCarousel
-            label="Teachers"
-            reviews={teacherTestimonials}
+      {/* Testimonial Cards Grid — 4 columns × 2 rows */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {allTestimonials.map((review, index) => (
+          <TestimonialCard
+            key={review.name}
+            review={review}
+            index={index}
             prefersReducedMotion={prefersReducedMotion}
-            variant="teacher"
           />
-          <ReviewCarousel
-            label="Students"
-            reviews={studentTestimonials}
-            prefersReducedMotion={prefersReducedMotion}
-            variant="student"
-          />
-        </div>
-
-        <SchoolMarquee marqueeSchools={marqueeSchools} prefersReducedMotion={prefersReducedMotion} />
+        ))}
       </div>
+      {/* Trusted Schools Marquee */}
+      <SchoolMarquee marqueeSchools={marqueeSchools} prefersReducedMotion={prefersReducedMotion} />
     </section>
   );
 }
 
-type ReviewCarouselProps = {
-  label: string;
-  reviews: Review[];
+type TestimonialCardProps = {
+  review: Review;
+  index: number;
   prefersReducedMotion: boolean | null;
-  variant: "teacher" | "student";
 };
 
-function ReviewCarousel({
-  label,
-  reviews,
-  prefersReducedMotion,
-  variant,
-}: ReviewCarouselProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+function TestimonialCard({ review, index, prefersReducedMotion }: TestimonialCardProps) {
   const reduceMotion = Boolean(prefersReducedMotion);
-
-  const transitionDuration = reduceMotion ? 0 : 0.44;
-  const currentReview = useMemo(() => reviews[activeIndex], [reviews, activeIndex]);
-  const totalReviews = reviews.length;
-  const labelSlug = label.toLowerCase();
-  const isStudent = variant === "student";
-
-  useEffect(() => {
-    if (reduceMotion || isPaused || totalReviews <= 1) {
-      return;
-    }
-
-    const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % totalReviews);
-    }, 5400);
-
-    return () => window.clearInterval(timer);
-  }, [isPaused, reduceMotion, totalReviews]);
-
-  const moveToPrevious = () => {
-    if (activeIndex === 0) {
-      return;
-    }
-    setActiveIndex((current) => current - 1);
-  };
-
-  const moveToNext = () => {
-    if (activeIndex === totalReviews - 1) {
-      return;
-    }
-    setActiveIndex((current) => current + 1);
-  };
-
-  const handleCarouselKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      moveToPrevious();
-    }
-    if (event.key === "ArrowRight") {
-      event.preventDefault();
-      moveToNext();
-    }
-  };
+  const isTeacher = review.audience === "teacher";
 
   return (
-    <div
-      className={`relative overflow-hidden rounded-[1.4rem] p-3 ring-1 sm:p-4 ${
-        isStudent
-          ? "bg-gradient-to-b from-primary/8 to-surface ring-primary/18"
-          : "bg-gradient-to-b from-surface to-page/45 ring-black/8"
+    <motion.figure
+      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: reduceMotion ? 0 : index * 0.06 }}
+      whileHover={reduceMotion ? {} : { y: -4, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+      className={`relative overflow-hidden rounded-2xl p-5 ${
+        isTeacher
+          ? "bg-gradient-to-br from-primary-dark to-primary/90 text-white"
+          : "bg-gradient-to-br from-primary-light/50 to-primary-light/25 text-ink"
       }`}
-      tabIndex={0}
-      role="region"
-      aria-label={`${label} reviews carousel`}
-      onKeyDown={handleCarouselKeyDown}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onFocus={() => setIsPaused(true)}
-      onBlur={() => setIsPaused(false)}
+      aria-label={`Testimonial from ${review.name}`}
     >
-      <div className="mb-4 flex items-center justify-between">
-        <h3
-          className={`inline-flex items-center rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] ${
-            isStudent
-              ? "bg-primary/10 text-primary ring-1 ring-primary/20"
-              : "bg-surface text-muted ring-1 ring-black/10"
-          }`}
-        >
-          {label}
-        </h3>
+      {/* Star SVG — top left, partially clipped */}
+      <div className="pointer-events-none absolute -left-5 -top-5 h-16 w-16 opacity-20">
+        <Image
+          src="/svgs/star.svg"
+          alt=""
+          width={64}
+          height={64}
+          className={isTeacher ? "brightness-200" : "brightness-75"}
+          aria-hidden="true"
+        />
       </div>
 
-      <div className="relative min-h-[280px] pb-6 pt-6 sm:min-h-[300px]">
-        <div className="pointer-events-none absolute left-1/2 top-1 h-[72%] w-[91%] -translate-x-1/2 rounded-[1rem] border border-black/8 bg-surface/65" />
-        <div className="pointer-events-none absolute left-1/2 top-3.5 h-[72%] w-[95%] -translate-x-1/2 rounded-[1rem] border border-black/7 bg-surface/72" />
-        <div className="pointer-events-none absolute left-1/2 top-6 h-[72%] w-[99%] -translate-x-1/2 rounded-[1rem] border border-black/6 bg-surface/78" />
-
-        <motion.figure
-          key={`${label}-${activeIndex}`}
-          initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 14, scale: 0.99 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: transitionDuration, ease: "easeOut" }}
-          className="relative rounded-[1rem] border border-black/10 bg-surface p-4 shadow-[0_12px_26px_rgba(17,15,34,0.09)] sm:p-5"
-        >
-          <blockquote className="text-sm leading-relaxed text-ink/85 sm:text-[0.98rem]">
-            &ldquo;{currentReview.quote}&rdquo;
-          </blockquote>
-          <figcaption className="mt-4 border-t border-black/10 pt-3">
-            <p className="text-[1.02rem] font-semibold text-ink">{currentReview.name}</p>
-            <p className="mt-0.5 text-sm text-muted">{currentReview.role}</p>
-          </figcaption>
-        </motion.figure>
+      {/* Star SVG — bottom right, partially clipped */}
+      <div className="pointer-events-none absolute -bottom-5 -right-5 h-16 w-16 opacity-15">
+        <Image
+          src="/svgs/star.svg"
+          alt=""
+          width={64}
+          height={64}
+          className={isTeacher ? "brightness-200" : "brightness-75"}
+          aria-hidden="true"
+        />
       </div>
 
-      <div className="flex items-center justify-center gap-3 pt-6">
-        <button
-          type="button"
-          onClick={moveToPrevious}
-          aria-label={`Previous ${labelSlug} review`}
-          disabled={activeIndex === 0}
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-surface text-muted transition-colors hover:bg-page disabled:cursor-not-allowed disabled:opacity-45"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M15 6C15 6 9.00001 10.4189 9 12C8.99999 13.5812 15 18 15 18" />
-          </svg>
-        </button>
+      <blockquote className={`relative z-10 text-sm leading-relaxed ${
+        isTeacher ? "text-white/90" : "text-ink/85"
+      }`}>
+        &ldquo;{review.quote}&rdquo;
+      </blockquote>
 
-        <div className="flex items-center gap-1.5">
-          {reviews.map((item, index) => (
-            <button
-              key={`${label}-${item.name}-${index}`}
-              type="button"
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Go to ${labelSlug} review ${index + 1}`}
-              className={`h-2 rounded-full transition-all ${
-                index === activeIndex
-                  ? "w-7 bg-primary"
-                  : "w-2 bg-primary/25 hover:bg-primary/40"
-              }`}
-            />
-          ))}
-        </div>
-
-        <button
-          type="button"
-          onClick={moveToNext}
-          aria-label={`Next ${labelSlug} review`}
-          disabled={activeIndex === totalReviews - 1}
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-surface text-muted transition-colors hover:bg-page disabled:cursor-not-allowed disabled:opacity-45"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M9.00005 6C9.00005 6 15 10.4189 15 12C15 13.5812 9 18 9 18" />
-          </svg>
-        </button>
-      </div>
-    </div>
+      <figcaption className={`relative z-10 mt-4 border-t pt-3 ${
+        isTeacher ? "border-white/20" : "border-primary/15"
+      }`}>
+        <p className={`text-sm font-semibold ${isTeacher ? "text-white" : "text-ink"}`}>
+          {review.name}
+        </p>
+        <p className={`mt-0.5 text-xs ${isTeacher ? "text-white/70" : "text-muted"}`}>
+          {review.role}
+        </p>
+      </figcaption>
+    </motion.figure>
   );
 }
 
@@ -327,7 +206,7 @@ function SchoolMarquee({ marqueeSchools, prefersReducedMotion }: SchoolMarqueePr
   const reduceMotion = Boolean(prefersReducedMotion);
 
   return (
-    <div aria-label="Schools partnering with RigorUp" className="mt-8 space-y-3 border-t border-primary/15 pt-6">
+    <div aria-label="Schools partnering with RigorUp" className="space-y-3">
       <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted">
         Trusted by progressive schools
       </p>
@@ -372,4 +251,3 @@ function SchoolMarquee({ marqueeSchools, prefersReducedMotion }: SchoolMarqueePr
     </div>
   );
 }
-
